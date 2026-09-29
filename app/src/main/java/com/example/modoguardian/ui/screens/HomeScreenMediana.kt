@@ -1,16 +1,18 @@
-package com.example.modoguardian.ui.theme
+package com.example.modoguardian.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,52 +22,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.modoguardian.R
 
+// Pantalla para tablets chicas: contenido centrado con imagen más grande
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-    Scaffold { innerPadding ->
+fun HomeScreenMediana() {
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text(text = "Modo Guardián") })
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+                .padding(32.dp),
+            verticalArrangement = Arrangement.spacedBy(28.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título principal
-            Text(
-                text = "Modo Guardián",
-                style = MaterialTheme.typography.titleLarge
-            )
-
-            // Mensaje de bienvenida
-            Text(
-                text = "¡Bienvenido a Modo Guardián!",
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-            // Botón de acción
-            Button(
-                onClick = { /* Acción futura */ },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Presióname")
-            }
-
-            // Imagen del logo
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo App",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp),
+                modifier = Modifier.height(250.dp),
                 contentScale = ContentScale.Fit
             )
+
+            Text(
+                text = "¡Bienvenido a Modo Guardián!",
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.headlineMedium
+            )
+
+            Button(
+                onClick = { /* Acción futura */ },
+                modifier = Modifier.width(300.dp)
+            ) {
+                Text(text = "Presióname")
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Medium", widthDp = 700, heightDp = 1000, showBackground = true)
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen()
+fun PreviewMedium() {
+    HomeScreenMediana()
 }
