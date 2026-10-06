@@ -1,9 +1,13 @@
 package com.example.modoguardian.navigation
 
 sealed class Screen(val route: String) {
-    data object Home : Screen(route = "home_page")
-    data object Profile : Screen(route = "profile_page")
-    data object Settings : Screen(route = "settings_page")
-    data object Registro : Screen(route = "registro_page")
-    data object PantallaPrincipal : Screen(route = "pantalla_principal_page")
+
+    data object Login : Screen("login")
+    data object HomeAdmin : Screen("home_admin")
+    data object HomeSupervisor : Screen("home_supervisor")
+    data object HomeOperador : Screen("home_operador")
+
+    // Rutas antiguas para que tus otras pantallas compilen sin error
+    data object Home : Screen("home")
+    data object Profile : Screen("profile")
 }

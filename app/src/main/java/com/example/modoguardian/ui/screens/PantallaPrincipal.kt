@@ -1,70 +1,70 @@
 package com.example.modoguardian.ui.screens
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.modoguardian.viewmodel.EstadoViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.modoguardian.navigation.Screen
+import com.example.modoguardian.viewmodel.LoginViewModel
 
 @Composable
 fun PantallaPrincipal(
     modifier: Modifier = Modifier,
-    viewModel: EstadoViewModel = viewModel()
+    loginViewModel: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    val estado by viewModel.activo.collectAsState()
-    val mostrarMensaje by viewModel.mostrarMensaje.collectAsState()
+    val navController = rememberNavController()
 
-    if (estado == null) {
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
+    // startDestination obliga a iniciar en la pantalla de Login
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Login.route,
+        modifier = modifier
+    ) {
+        composable(Screen.Login.route) {
+            LoginScreen(navController = navController, viewModel = loginViewModel)
         }
-    } else {
-        val estaActivo = estado!!
-
-        val colorAnimado by animateColorAsState(
-            targetValue = if (estaActivo) Color(0xFF4CAF50) else Color(0xFFBBBEC),
-            animationSpec = tween(durationMillis = 500)
-        )
-
-        val textoBoton by remember(key1 = estaActivo) {
-            derivedStateOf { if (estaActivo) "Desactivar" else "Activar" }
-        }
-
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(32.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(
-                onClick = { viewModel.alternarEstado() },
-                colors = ButtonDefaults.buttonColors(containerColor = colorAnimado),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
+        composable(Screen.HomeAdmin.route) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = textoBoton, style = MaterialTheme.typography.titleLarge)
+                Text(text = "Sesión iniciada: Modo Administrador", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { navController.popBackStack() }) {
+                    Text("Cerrar Sesión")
+                }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            AnimatedVisibility(visible = mostrarMensaje) {
-                Text(
-                    text = "Estado guardado exitosamente!",
-                    color = Color(0xFF4CAF50),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+        }
+        composable(Screen.HomeSupervisor.route) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Sesión iniciada: Modo Supervisor", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { navController.popBackStack() }) {
+                    Text("Cerrar Sesión")
+                }
+            }
+        }
+        composable(Screen.HomeOperador.route) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Sesión iniciada: Modo Operador", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { navController.popBackStack() }) {
+                    Text("Cerrar Sesión")
+                }
             }
         }
     }
