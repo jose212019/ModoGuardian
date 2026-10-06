@@ -18,13 +18,12 @@ class MainViewModel : ViewModel() {
 
     val events: List<SecurityEvent> = repository.getSecurityEvents()
 
-
     private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
     val navigationEvent: SharedFlow<NavigationEvent> = _navigationEvent.asSharedFlow()
 
-    fun navigateTo(screen: Screen) {
+    fun navigateTo(screen: Screen, limpiarPila: Boolean = false) {
         viewModelScope.launch {
-            _navigationEvent.emit(NavigationEvent.NavigateTo(screen))
+            _navigationEvent.emit(NavigationEvent.NavigateTo(screen, limpiarPila))
         }
     }
 
